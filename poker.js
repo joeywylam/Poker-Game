@@ -60,6 +60,7 @@ function initializeGame() {
 
     currentPlayer = (bigBlind + 1) % numPlayers; // Start after big blind
     updateGameUI();
+    enablePlayerActions(); // Enable the action buttons when the game starts
 }
 
 // Deal community cards in stages
@@ -101,6 +102,21 @@ function updateGameUI() {
     document.getElementById('pot').innerText = `Total Pot: $${pot}`;
 }
 
+// Enable or disable player action buttons
+function enablePlayerActions() {
+    document.getElementById('bet').disabled = false;
+    document.getElementById('raise').disabled = false;
+    document.getElementById('call').disabled = false;
+    document.getElementById('fold').disabled = false;
+}
+
+function disablePlayerActions() {
+    document.getElementById('bet').disabled = true;
+    document.getElementById('raise').disabled = true;
+    document.getElementById('call').disabled = true;
+    document.getElementById('fold').disabled = true;
+}
+
 // Basic betting actions (bet, call, raise, fold)
 function bet() {
     const betAmount = minBet;  // Minimum bet amount
@@ -129,6 +145,8 @@ function fold() {
 }
 
 function nextPlayer() {
+    disablePlayerActions(); // Disable buttons while switching players
+
     do {
         currentPlayer = (currentPlayer + 1) % numPlayers;
     } while (players[currentPlayer].hasFolded);
@@ -138,12 +156,14 @@ function nextPlayer() {
         declareWinner();
     } else {
         updateGameUI();
+        enablePlayerActions(); // Enable buttons for the next player
     }
 }
 
 function declareWinner() {
     const winner = players.findIndex(p => !p.hasFolded) + 1;
     document.getElementById('community-cards').innerHTML = `Player ${winner} wins the pot of $${pot}!`;
+    disablePlayerActions(); // Disable further actions once a winner is declared
 }
 
 // Hook up button actions
