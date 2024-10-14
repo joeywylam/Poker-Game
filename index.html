@@ -3,35 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poker Game</title>
+    <title>Texas Hold'em Poker</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Texas Hold'em Poker</h1>
-
-    <div id="player-selection">
-        <label for="num-players">Select number of players (2-6):</label>
-        <input type="number" id="num-players" min="2" max="6" value="2">
-        <label for="min-bet">Select minimum bet:</label>
-        <input type="number" id="min-bet" min="1" value="10">
-        <button id="start-game">Start Game</button>
+    <div id="communityCards">Community Cards: <span id="community"></span></div>
+    <div id="playerMoney"></div>
+    <div id="actions">
+        <button id="bet">Bet</button>
+        <button id="raise">Raise</button>
+        <button id="call">Call</button>
+        <button id="fold">Fold</button>
     </div>
-
-    <div id="game-container" style="display: none;">
-        <div id="community-cards"></div> <!-- Community cards -->
-        <div id="player-hands"></div>     <!-- Player hands (only for the current player) -->
-        <div id="player-status"></div>    <!-- Player's remaining money -->
-
-        <div id="actions">
-            <button id="bet" disabled>Bet</button>
-            <button id="raise" disabled>Raise</button>
-            <button id="call" disabled>Call</button>
-            <button id="fold" disabled>Fold</button>
-            <button id="next-turn" style="display: none;">Next Turn</button>
-        </div>
-        <div id="pot">Total Pot: $0</div>
-    </div>
-
+    <div id="potDisplay">Total Pot: $<span id="pot">0</span></div>
+    <div id="playerStatus"></div>
     <script src="poker.js"></script>
 </body>
 </html>
