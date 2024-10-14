@@ -37,7 +37,7 @@ function dealCards() {
     for (let player of players) {
         player.hand = [getRandomCard(), getRandomCard()];  // Each player gets 2 cards
     }
-    communityCards = [];
+    communityCards = [getRandomCard(), getRandomCard(), getRandomCard()]; // Deal 3 community cards
 }
 
 // Get a random card (for simplicity, not implementing a full deck)
@@ -48,9 +48,18 @@ function getRandomCard() {
     return card;
 }
 
-// Show community cards
+// Show community cards and player hands
 function showCommunityCards() {
     document.getElementById('community').innerText = communityCards.join(' ');
+    updatePlayerHandsDisplay();
+}
+
+function updatePlayerHandsDisplay() {
+    let playerDisplay = '';
+    for (let player of players) {
+        playerDisplay += `Player ${player.id + 1}: ${player.hand.join(' ')}<br>`;
+    }
+    document.getElementById('playerMoney').innerHTML = playerDisplay;
 }
 
 // Evaluate hand strength (simplified for demo purposes)
