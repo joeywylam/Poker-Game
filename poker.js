@@ -2,13 +2,15 @@ let players = [];
 let communityCards = [];
 let pot = 0;
 let currentPlayer = 0;
-let numPlayers = 6;  // Maximum players
-const smallBlindAmount = 1;
-const bigBlindAmount = 2;
+let numPlayers = 2;  // Default players
+let smallBlindAmount = 1;
+let bigBlindAmount = 2;
 let dealerPosition = 0;  // Start with Player 1 as the dealer
+let minBet = 1;  // Default minimum bet
 
 // Initialize players
 function initPlayers() {
+    players = [];
     for (let i = 0; i < numPlayers; i++) {
         players.push({ id: i, money: 100, hand: [], isAI: (i !== 0), isFolded: false });
     }
@@ -127,11 +129,42 @@ function enablePlayerActions() {
 
 // Start the game
 function startGame() {
+    numPlayers = parseInt(document.getElementById('numPlayers').value);
+    minBet = parseInt(document.getElementById('minBet').value);
+    smallBlindAmount = minBet;  // Set the small blind to the minimum bet
+    bigBlindAmount = minBet * 2;  // Set big blind to double the minimum bet
+
     initPlayers();
     dealCards();
     showCommunityCards();
+    updatePlayerMoneyDisplay();
+    document.getElementById('setup').style.display = 'none'; // Hide setup
+    document.getElementById('game').style.display = 'block'; // Show game
     enablePlayerActions();
 }
 
-// Initialize the game
-startGame();
+// Update player money display
+function updatePlayerMoneyDisplay() {
+    let display = '';
+    for (let player of players) {
+        display += `Player ${player.id + 1}: $${player.money}<br>`;
+    }
+    document.getElementById('playerMoney').innerHTML = display;
+}
+
+// Event listeners for buttons
+document.getElementById('startGame').addEventListener('click', startGame);
+document.getElementById('bet').addEventListener('click', function() {
+    const amount = parseInt(document.getElementById('betAmount').value);
+    bet(players[currentPlayer], amount);
+});
+document.getElementById('raise').addEventListener('click', function() {
+    const amount = parseInt(document.getElementById('betAmount').value);
+    raise(players[currentPlayer], amount);
+});
+document.getElementById('call').addEventListener('click', function() {
+    call(players[currentPlayer]);
+});
+document.getElementById('fold').addEventListener('click', function() {
+    fold(players[currentPlayer]);
+});
