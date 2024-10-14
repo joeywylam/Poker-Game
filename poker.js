@@ -7,6 +7,7 @@ let smallBlindAmount = 1;
 let bigBlindAmount = 2;
 let dealerPosition = 0;  // Start with Player 1 as the dealer
 let minBet = 1;  // Default minimum bet
+let currentBet = 0; // Track current bet amount
 
 // Initialize players
 function initPlayers() {
@@ -21,6 +22,8 @@ function initPlayers() {
 function assignBlinds() {
     let smallBlind = (dealerPosition + 1) % numPlayers;
     let bigBlind = (dealerPosition + 2) % numPlayers;
+
+    // Deduct blinds from respective players
     players[smallBlind].money -= smallBlindAmount;
     players[bigBlind].money -= bigBlindAmount;
     updatePot(smallBlindAmount + bigBlindAmount);
@@ -29,7 +32,7 @@ function assignBlinds() {
 // Update the pot display
 function updatePot(amount) {
     pot += amount;
-    document.getElementById('pot').innerText = pot;
+    document.getElementById('pot').innerText = `Total Pot: $${pot}`;
 }
 
 // Deal cards to players
@@ -50,14 +53,15 @@ function getRandomCard() {
 
 // Show community cards and player hands
 function showCommunityCards() {
-    document.getElementById('community').innerText = communityCards.join(' ');
+    document.getElementById('community').innerText = `Community Cards: ${communityCards.join(' ')}`;
     updatePlayerHandsDisplay();
 }
 
+// Update the display of player hands
 function updatePlayerHandsDisplay() {
     let playerDisplay = '';
     for (let player of players) {
-        playerDisplay += `Player ${player.id + 1}: ${player.hand.join(' ')}<br>`;
+        playerDisplay += `Player ${player.id + 1}: ${player.hand.join(' ')} - $${player.money}<br>`;
     }
     document.getElementById('playerMoney').innerHTML = playerDisplay;
 }
@@ -92,20 +96,35 @@ function automateAITurns() {
 
 // Player action functions
 function bet(player, amount) {
-    if (amount <= player.money) {
+    if (amount <= player.money && amount > currentBet) {
         player.money -= amount;
         updatePot(amount);
+        currentBet = amount;  // Update the current bet
         nextTurn();
+    } else {
+        alert("Invalid bet amount!");
     }
 }
 
 function raise(player, amount) {
-    bet(player, amount);
+    if (amount <= player.money && amount > currentBet) {
+        player.money -= amount;
+        updatePot(amount);
+        currentBet = amount;  // Update the current bet
+        nextTurn();
+    } else {
+        alert("Invalid raise amount!");
+    }
 }
 
 function call(player) {
-    // Implement logic for calling the bet
-    nextTurn();
+    if (currentBet <= player.money) {
+        player.money -= currentBet;  // Deduct current bet from player
+        updatePot(currentBet);  // Add to pot
+        nextTurn();
+    } else {
+        alert("Not enough money to call!");
+    }
 }
 
 function fold(player) {
