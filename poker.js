@@ -10,7 +10,7 @@ let dealerPosition = 0;  // Start with Player 1 as the dealer
 // Initialize players
 function initPlayers() {
     for (let i = 0; i < numPlayers; i++) {
-        players.push({ id: i, money: 100, hand: [], isAI: (i !== 0) });
+        players.push({ id: i, money: 100, hand: [], isAI: (i !== 0), isFolded: false });
     }
     assignBlinds();
 }
@@ -62,17 +62,9 @@ function aiDecision(player) {
     let randomFactor = Math.random();
 
     if (handStrength > 7) {
-        if (randomFactor > 0.5) {
-            raise(player);
-        } else {
-            call(player);
-        }
+        raise(player, Math.floor(Math.random() * (player.money / 2)) + 1); // AI raises a random amount
     } else if (handStrength > 4) {
-        if (randomFactor > 0.3) {
-            call(player);
-        } else {
-            fold(player);
-        }
+        call(player);
     } else {
         fold(player);
     }
@@ -87,9 +79,40 @@ function automateAITurns() {
     }
 }
 
+// Player action functions
+function bet(player, amount) {
+    if (amount <= player.money) {
+        player.money -= amount;
+        updatePot(amount);
+        nextTurn();
+    }
+}
+
+function raise(player, amount) {
+    bet(player, amount);
+}
+
+function call(player) {
+    // Implement logic for calling the bet
+    nextTurn();
+}
+
+function fold(player) {
+    player.isFolded = true;
+    nextTurn();
+}
+
 // Next player's turn
 function nextTurn() {
     currentPlayer = (currentPlayer + 1) % numPlayers;
+
+    // Move dealer position
+    if (currentPlayer === dealerPosition) {
+        dealerPosition = (dealerPosition + 1) % numPlayers;
+        assignBlinds();
+    }
+
+    // Check if the current player is AI or not
     if (players[currentPlayer].isAI) {
         automateAITurns();
     } else {
