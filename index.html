@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Texas Hold'em Poker Game</h1>
+
+    <div id="game-container">
+        <div id="players-container"></div>  <!-- Player hands -->
+        <div id="community-cards"></div>     <!-- Community cards -->
+        <div id="actions">
+            <button id="deal-cards">Deal Cards</button>
+            <button id="show-flop" disabled>Show Flop</button>
+            <button id="show-turn" disabled>Show Turn</button>
+            <button id="show-river" disabled>Show River</button>
+            <button id="reset-game">Reset Game</button>
+        </div>
+        <div id="betting-actions">
+            <button id="bet" disabled>Bet</button>
+            <button id="fold" disabled>Fold</button>
+        </div>
+        <div id="winner"></div>  <!-- Display the winner here -->
+    </div>
+
+    <script src="poker.js"></script>
+</body>
+</html>
