@@ -5,11 +5,15 @@ body {
     color: #fff;
 }
 
+#player-selection {
+    margin-top: 20px;
+}
+
 #game-container {
     margin-top: 20px;
 }
 
-#players-container, #community-cards {
+#player-hands, #community-cards {
     margin-bottom: 20px;
 }
 
@@ -37,4 +41,9 @@ button {
 
 button:disabled {
     background-color: grey;
+}
+
+#pot, #player-status {
+    margin-top: 20px;
+    font-size: 20px;
 }
