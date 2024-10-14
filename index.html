@@ -7,23 +7,29 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Texas Hold'em Poker Game</h1>
+    <h1>Texas Hold'em Poker</h1>
 
-    <div id="game-container">
-        <div id="players-container"></div>  <!-- Player hands -->
-        <div id="community-cards"></div>     <!-- Community cards -->
+    <div id="player-selection">
+        <label for="num-players">Select number of players (2-6):</label>
+        <input type="number" id="num-players" min="2" max="6" value="2">
+        <label for="min-bet">Select minimum bet:</label>
+        <input type="number" id="min-bet" min="1" value="10">
+        <button id="start-game">Start Game</button>
+    </div>
+
+    <div id="game-container" style="display: none;">
+        <div id="community-cards"></div> <!-- Community cards -->
+        <div id="player-hands"></div>     <!-- Player hands (only for the current player) -->
+        <div id="player-status"></div>    <!-- Player's remaining money -->
+
         <div id="actions">
-            <button id="deal-cards">Deal Cards</button>
-            <button id="show-flop" disabled>Show Flop</button>
-            <button id="show-turn" disabled>Show Turn</button>
-            <button id="show-river" disabled>Show River</button>
-            <button id="reset-game">Reset Game</button>
-        </div>
-        <div id="betting-actions">
             <button id="bet" disabled>Bet</button>
+            <button id="raise" disabled>Raise</button>
+            <button id="call" disabled>Call</button>
             <button id="fold" disabled>Fold</button>
+            <button id="next-turn" style="display: none;">Next Turn</button>
         </div>
-        <div id="winner"></div>  <!-- Display the winner here -->
+        <div id="pot">Total Pot: $0</div>
     </div>
 
     <script src="poker.js"></script>
